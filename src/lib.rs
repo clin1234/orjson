@@ -141,6 +141,7 @@ pub unsafe extern "C" fn orjson_init_exec(mptr: *mut PyObject) -> c_int {
                     #[cfg(Py_3_10)]
                     PyCFunctionFastWithKeywords: dumps,
                     #[cfg(not(Py_3_10))]
+                    #[allow(deprecated)]
                     _PyCFunctionFastWithKeywords: dumps,
                 },
                 ml_flags: pyo3_ffi::METH_FASTCALL | METH_KEYWORDS,
