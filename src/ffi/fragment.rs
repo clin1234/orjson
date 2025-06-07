@@ -12,6 +12,8 @@ use pyo3_ffi::{
     Py_TPFLAGS_DEFAULT,
 };
 
+use std::mem;
+
 // https://docs.python.org/3/c-api/typeobj.html#typedef-examples
 
 #[cfg(Py_GIL_DISABLED)]
@@ -72,7 +74,7 @@ pub unsafe extern "C" fn orjson_fragment_tp_new(
                 #[cfg(Py_GIL_DISABLED)]
                 _padding: 0,
                 #[cfg(Py_GIL_DISABLED)]
-                ob_mutex: pyo3_ffi::PyMutex::new(),
+                ob_mutex: unsafe { mem::zeroed() },
                 #[cfg(Py_GIL_DISABLED)]
                 ob_gc_bits: 0,
                 #[cfg(Py_GIL_DISABLED)]
@@ -123,7 +125,7 @@ pub unsafe extern "C" fn orjson_fragmenttype_new() -> *mut PyTypeObject {
                     #[cfg(Py_GIL_DISABLED)]
                     _padding: 0,
                     #[cfg(Py_GIL_DISABLED)]
-                    ob_mutex: pyo3_ffi::PyMutex::new(),
+                    ob_mutex: unsafe { mem::zeroed() },
                     #[cfg(Py_GIL_DISABLED)]
                     ob_gc_bits: 0,
                     #[cfg(Py_GIL_DISABLED)]
