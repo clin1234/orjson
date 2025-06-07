@@ -5,14 +5,15 @@ use core::ffi::c_char;
 #[cfg(Py_GIL_DISABLED)]
 use std::sync::atomic::{AtomicIsize, AtomicU32, AtomicU64};
 
+#[cfg(Py_GIL_DISABLED)]
+use std::mem;
+
 use core::ptr::null_mut;
 use pyo3_ffi::{
     PyErr_SetObject, PyExc_TypeError, PyObject, PyTuple_GET_ITEM, PyTypeObject, PyType_Ready,
     PyType_Type, PyUnicode_FromStringAndSize, PyVarObject, Py_DECREF, Py_INCREF, Py_SIZE,
     Py_TPFLAGS_DEFAULT,
 };
-
-use std::mem;
 
 // https://docs.python.org/3/c-api/typeobj.html#typedef-examples
 
