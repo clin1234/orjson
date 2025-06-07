@@ -24,8 +24,10 @@ const _Py_IMMORTAL_REFCNT_LOCAL: u32 = u32::MAX;
 pub struct Fragment {
     #[cfg(Py_GIL_DISABLED)]
     pub ob_tid: usize,
-    #[cfg(Py_GIL_DISABLED)]
-    pub _padding: u16,
+    #[cfg(all(Py_GIL_DISABLED, Py_3_14))]
+    ob_flags: u16,
+    #[cfg(all(Py_GIL_DISABLED, not(Py_3_14)))]
+    _padding: u16,
     #[cfg(Py_GIL_DISABLED)]
     pub ob_mutex: pyo3_ffi::PyMutex,
     #[cfg(Py_GIL_DISABLED)]
@@ -71,7 +73,9 @@ pub unsafe extern "C" fn orjson_fragment_tp_new(
             let obj = Box::new(Fragment {
                 #[cfg(Py_GIL_DISABLED)]
                 ob_tid: 0,
-                #[cfg(Py_GIL_DISABLED)]
+                #[cfg(all(Py_GIL_DISABLED, Py_3_14))]
+                ob_flags: 0,
+                #[cfg(all(Py_GIL_DISABLED, not(Py_3_14)))]
                 _padding: 0,
                 #[cfg(Py_GIL_DISABLED)]
                 ob_mutex: unsafe { mem::zeroed() },
@@ -122,7 +126,9 @@ pub unsafe extern "C" fn orjson_fragmenttype_new() -> *mut PyTypeObject {
                 ob_base: PyObject {
                     #[cfg(Py_GIL_DISABLED)]
                     ob_tid: 0,
-                    #[cfg(Py_GIL_DISABLED)]
+                    #[cfg(all(Py_GIL_DISABLED, Py_3_14))]
+                    ob_flags: 0,
+                    #[cfg(all(Py_GIL_DISABLED, not(Py_3_14)))]
                     _padding: 0,
                     #[cfg(Py_GIL_DISABLED)]
                     ob_mutex: unsafe { mem::zeroed() },
